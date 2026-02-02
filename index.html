@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Resim</title>
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
       height: 100%;
       background: black;
       overflow: hidden;
     }
     img {
+      position: fixed;
+      inset: 0;
       width: 100vw;
       height: 100vh;
-      object-fit: contain;
+      object-fit: cover;   /* ← TAM EKRAN DOLDURUR (kırpma olur) */
     }
   </style>
 </head>
 <body>
-  <img src="https://i.hizliresim.com/75cx4a5.jpeg" alt="Resim">
+  <img src="https://i.hizliresim.com/75cx4a5.jpeg" alt="">
 </body>
 </html>
