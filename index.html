@@ -71,10 +71,9 @@
             <nav class="dash-nav">
                 <span id="tab-acc" class="active-tab" onclick="switchMainTab('accounts')">HESAPLAR</span>
                 <span id="tab-card" onclick="switchMainTab('cards')">KARTLAR</span>
-                <span>FİNANSAL ÖZET</span>
+                <span id="tab-sum" onclick="switchMainTab('summary')">FİNANSAL ÖZET</span>
             </nav>
-            <div id="info-box">
-                </div>
+            <div id="info-box"></div>
         </header>
 
         <div id="header-generic" class="page-title hidden">
@@ -82,8 +81,7 @@
             <span style="float:right;">⏸</span>
         </div>
 
-        <main class="list-container" id="main-content">
-            </main>
+        <main class="list-container" id="main-content"></main>
 
         <nav class="bottom-nav">
             <div id="n-home" class="nav-item active" onclick="showView('home')"><span>🏠</span><span>Ana Sayfa</span></div>
@@ -95,7 +93,6 @@
     </div>
 
     <script>
-        // Giriş Kontrol
         function loginCheck() {
             if (document.getElementById('password').value === "7654321") {
                 document.getElementById('login-page').style.display = 'none';
@@ -104,21 +101,18 @@
             } else { alert("Hatalı parola!"); }
         }
 
-        // Çıkış İşlemi
         function logout() {
             document.getElementById('dashboard-page').style.display = 'none';
             document.getElementById('login-page').style.display = 'flex';
             document.getElementById('password').value = "";
         }
 
-        // Görünüm Değiştirme (Alt Menü)
         function showView(view) {
             const content = document.getElementById('main-content');
             const headerMain = document.getElementById('header-main');
             const headerGen = document.getElementById('header-generic');
             const titleText = document.getElementById('page-title-text');
             
-            // Menü aktiflik durumunu güncelle
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             headerMain.classList.add('hidden');
             headerGen.classList.remove('hidden');
@@ -128,51 +122,55 @@
                 headerMain.classList.remove('hidden');
                 headerGen.classList.add('hidden');
                 switchMainTab('accounts');
-            } 
-            else if(view === 'apply') {
-                document.getElementById('n-apply').classList.add('active');
-                titleText.innerText = "BAŞVURULAR";
-                content.innerHTML = `<div class="list-item">Hesap Açılışı<span>❯</span></div><div class="list-item">Kredi Başvurusu<span>❯</span></div><div class="list-item">Kart Başvurusu<span>❯</span></div>`;
-            }
-            else if(view === 'send') {
-                document.getElementById('n-send').classList.add('active');
-                titleText.innerText = "PARA GÖNDER";
-                content.innerHTML = `<div class="list-item">Kayıtlı İşlemler<span>❯</span></div><div class="list-item">Son 50 İşlem<span>❯</span></div><div class="list-item">Başka Hesaba<span>❯</span></div><div class="list-item">Kolay Adrese<span>❯</span></div><div class="list-item">FAST İşlemleri <span class="tag-new">fast</span><span>❯</span></div>`;
-            }
-            else if(view === 'pay') {
-                document.getElementById('n-pay').classList.add('active');
-                titleText.innerText = "ÖDEME YAP";
-                content.innerHTML = `<div class="list-item">Kayıtlı Faturalar<span>❯</span></div><div class="list-item">Fatura<span>❯</span></div><div class="list-item">Kart Borcu<span>❯</span></div><div class="list-item">Ulaşım Kart <span style="color:green">🌱</span><span>❯</span></div>`;
-            }
-            else if(view === 'menu') {
-                document.getElementById('n-menu').classList.add('active');
-                titleText.innerText = "MENÜ";
-                content.innerHTML = `
-                    <div class="fast-actions">
-                        <div class="fast-card">📋<br>Başka Hesaba<br>Para Gönder</div>
-                        <div class="fast-card">📄<br>Fatura<br>Ödeme</div>
-                        <div class="fast-card">⚡<br>Kolay Adres<br>İşlemleri</div>
-                    </div>
-                    <div class="list-item">Hesaplar<span>❯</span></div><div class="list-item">Kartlar<span>❯</span></div><div class="list-item">Krediler<span>❯</span></div><div class="list-item">Yatırım İşlemleri<span>❯</span></div>
-                `;
+            } else {
+                document.getElementById('n-' + view).classList.add('active');
+                titleText.innerText = view === 'send' ? "PARA GÖNDER" : view === 'pay' ? "ÖDEME YAP" : view === 'apply' ? "BAŞVURULAR" : "MENÜ";
+                
+                if(view === 'send') {
+                    content.innerHTML = `<div class="list-item">Kayıtlı İşlemler<span>❯</span></div><div class="list-item">Son 50 İşlem<span>❯</span></div><div class="list-item">Başka Hesaba<span>❯</span></div><div class="list-item">Kolay Adrese<span>❯</span></div><div class="list-item">FAST İşlemleri <span class="tag-new">fast</span><span>❯</span></div>`;
+                } else if(view === 'pay') {
+                    content.innerHTML = `<div class="list-item">Kayıtlı Faturalar<span>❯</span></div><div class="list-item">Fatura<span>❯</span></div><div class="list-item">Kart Borcu<span>❯</span></div><div class="list-item">Ulaşım Kart <span style="color:green">🌱</span><span>❯</span></div>`;
+                } else if(view === 'menu') {
+                    content.innerHTML = `<div class="fast-actions"><div class="fast-card">📋<br>Başka Hesaba<br>Para Gönder</div><div class="fast-card">📄<br>Fatura<br>Ödeme</div><div class="fast-card">⚡<br>Kolay Adres<br>İşlemleri</div></div><div class="list-item">Hesaplar<span>❯</span></div><div class="list-item">Kartlar<span>❯</span></div><div class="list-item">Krediler<span>❯</span></div><div class="list-item">Yatırım İşlemleri<span>❯</span></div>`;
+                } else {
+                    content.innerHTML = `<div class="list-item">Hesap Açılışı<span>❯</span></div><div class="list-item">Kredi Başvurusu<span>❯</span></div><div class="list-item">Kart Başvurusu<span>❯</span></div>`;
+                }
             }
         }
 
-        // Ana Sayfa Sekme Değişimi
         function switchMainTab(tab) {
             const info = document.getElementById('info-box');
             const content = document.getElementById('main-content');
             document.getElementById('tab-acc').classList.remove('active-tab');
             document.getElementById('tab-card').classList.remove('active-tab');
+            if(document.getElementById('tab-sum')) document.getElementById('tab-sum').classList.remove('active-tab');
 
             if(tab === 'accounts') {
                 document.getElementById('tab-acc').classList.add('active-tab');
                 info.innerHTML = `<div style="padding:10px; background:rgba(255,255,255,0.1); border-radius:10px; margin-top:10px;"><b>Oğuz Kağan Bölükbaşı</b><br><small>22348864 - Silivri</small></div><h1 style="text-align:center; margin:15px 0;">1.005.600,00 TL</h1>`;
-                content.innerHTML = `<div style="text-align:center; padding:50px; color:#999;">💬<br>İşleminiz bulunmamaktadır.</div>`;
-            } else {
+                content.innerHTML = `
+                    <div style="background:#f0f7ff; margin:15px; padding:15px; border-radius:12px; border:1px solid #d0e5ff;">
+                        <h4 style="color:#0067b1; font-size:13px; margin-bottom:5px;">Aylık Mevduat Getirisi</h4>
+                        <p style="font-size:11px; color:#666;">Mevcut bakiyenizin net getirisi:</p>
+                        <div style="font-size:20px; font-weight:bold; color:#2e7d32;">+29.000,00 TL</div>
+                    </div>
+                    <div style="text-align:center; padding:30px; color:#999;">💬<br>İşleminiz bulunmamaktadır.</div>`;
+            } else if(tab === 'cards') {
                 document.getElementById('tab-card').classList.add('active-tab');
-                info.innerHTML = `<div style="padding:10px; background:rgba(255,255,255,0.1); border-radius:10px; margin-top:10px;"><b>DenizBank Gold MasterCard</b><br><small>5556 60** **** 6190</small></div><h1 style="text-align:center; margin:15px 0; color:#ffeb3b;">-11.996,46 TL</h1>`;
+                info.innerHTML = `<div style="padding:10px; background:rgba(255,255,255,0.1); border-radius:10px; margin-top:10px;"><b>DenizBank Gold MasterCard</b><br><small>5556 60** **** 6190</small></div><h1 style="text-align:center; margin:15px 0; color:#ffeb3b;">-50.000,00 TL</h1>`;
                 content.innerHTML = `<div style="text-align:center; padding:50px; color:#999;">⏸<br>Dönemiçi işleminiz bulunmamaktadır.</div>`;
+            } else if(tab === 'summary') {
+                document.getElementById('tab-sum').classList.add('active-tab');
+                info.innerHTML = `<div style="padding:10px; margin-top:10px;"><h2 style="text-align:center;">Finansal Özet</h2></div>`;
+                content.innerHTML = `
+                    <div style="padding:20px;">
+                        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px dotted #ccc;"><span>Toplam Varlık</span><span style="color:#2e7d32; font-weight:bold;">1.005.600,00 TL</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px dotted #ccc;"><span>Toplam Borç</span><span style="color:#e60050; font-weight:bold;">-50.000,00 TL</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:15px 0; margin-top:10px; border-top:2px solid #0082f0;">
+                            <span style="font-weight:bold;">Net Varlık</span>
+                            <span style="font-weight:bold; font-size:18px;">955.600,00 TL</span>
+                        </div>
+                    </div>`;
             }
         }
     </script>
