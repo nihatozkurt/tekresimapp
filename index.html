@@ -4,280 +4,189 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DenizBank</title>
-    <link rel="apple-touch-icon" href="logo.png">
+	<link rel="apple-touch-icon" href="logo.png">
     <style>
         /* --- GENEL SIFIRLAMA --- */
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; touch-action: manipulation; }
         body { background-color: #f0f2f5; height: 100vh; overflow: hidden; }
 
-        /* --- 1. GİRİŞ EKRANI (LOGIN) --- */
+        /* --- GİRİŞ EKRANI --- */
         #login-page {
             background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), 
                         url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
+            background-size: cover; background-position: center;
+            height: 100vh; display: flex; flex-direction: column; padding: 20px;
         }
-
         .login-header { display: flex; justify-content: space-between; align-items: center; color: white; margin-bottom: 30px; }
-        .login-header .logo-text { font-size: 22px; font-weight: bold; }
         .lang-btn { border: 1px solid white; padding: 4px 12px; border-radius: 4px; font-size: 12px; background: rgba(255,255,255,0.1); color: white; }
-
-        .login-card {
-            background: rgba(255, 255, 255, 0.94);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
+        .login-card { background: rgba(255, 255, 255, 0.94); border-radius: 12px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 100%; max-width: 400px; margin: 0 auto; }
         .tabs { display: flex; margin-bottom: 20px; border-radius: 8px; overflow: hidden; background: #eee; }
         .tab { flex: 1; padding: 12px; text-align: center; font-size: 14px; font-weight: bold; cursor: pointer; border: none; }
         .tab.active { background: #0067b1; color: white; }
-
-        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; font-weight: bold; }
         .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; outline: none; }
+        .login-btn { width: 100%; padding: 16px; border: none; border-radius: 6px; color: white; background: linear-gradient(90deg, #e60050 0%, #9e0050 100%); font-weight: bold; font-size: 16px; cursor: pointer; }
 
-        .captcha-area { display: flex; gap: 10px; margin-top: 5px; }
-        .captcha-img { background: repeating-linear-gradient(45deg, #ddd, #ddd 10px, #eee 10px, #eee 20px); flex: 1; height: 45px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; letter-spacing: 5px; color: #444; border: 1px solid #ccc; }
-        
-        .login-btn { 
-            width: 100%; padding: 16px; border: none; border-radius: 6px; color: white;
-            background: linear-gradient(90deg, #e60050 0%, #9e0050 100%);
-            font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px;
-        }
-
-        /* --- 2. DASHBOARD EKRANI --- */
-        #dashboard-page {
-            display: none;
-            background-color: white;
-            height: 100vh;
-            flex-direction: column;
-        }
-
-        .dash-header {
-            background-color: #0082f0;
-            color: white;
-            padding: 15px 15px 25px 15px;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-        }
-
+        /* --- DASHBOARD --- */
+        #dashboard-page { display: none; background-color: white; height: 100vh; flex-direction: column; }
+        .dash-header { background-color: #0082f0; color: white; padding: 15px 15px 25px 15px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
         .dash-top-icons { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        
+        /* Sekme Navigasyonu */
         .dash-nav { display: flex; justify-content: space-around; margin-bottom: 20px; }
-        .dash-nav span { font-size: 13px; font-weight: bold; opacity: 0.7; padding-bottom: 5px; }
+        .dash-nav span { font-size: 13px; font-weight: bold; opacity: 0.7; padding-bottom: 5px; cursor: pointer; transition: 0.3s; }
         .dash-nav .active-tab { opacity: 1; border-bottom: 3px solid white; }
 
-        .acc-info-card {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
+        .acc-info-card { background: rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .balance-section { text-align: center; margin-bottom: 20px; }
-        .balance-section h1 { font-size: 34px; margin: 5px 0; }
+        .balance-section h1 { font-size: 32px; margin: 5px 0; }
         .balance-section p { font-size: 12px; opacity: 0.9; }
 
-        .grid-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            text-align: center;
-        }
-        .action-box {
-            background: rgba(255,255,255,0.2);
-            width: 55px; height: 55px; border-radius: 15px;
-            margin: 0 auto 8px;
-            display: flex; align-items: center; justify-content: center; font-size: 22px;
-        }
+        .grid-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; }
+        .action-box { background: rgba(255,255,255,0.2); width: 50px; height: 50px; border-radius: 15px; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
         .grid-actions span { font-size: 10px; display: block; line-height: 1.2; }
 
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 75px;
-            background-color: white;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #eee;
-            padding-bottom: 10px;
-            z-index: 1000;
-        }
+        /* İçerik Alanları */
+        .content-container { flex: 1; overflow-y: auto; padding-bottom: 80px; }
+        .tab-content { display: none; flex-direction: column; align-items: center; padding: 40px 20px; text-align: center; }
+        .tab-content.active { display: flex; }
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #8e99a3;
-            font-size: 11px;
-            font-weight: bold;
-            flex: 1;
-        }
-
+        /* Alt Menü */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background-color: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 1000; padding-bottom: 10px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #8e99a3; font-size: 11px; font-weight: bold; flex: 1; }
         .nav-item.active { color: #0082f0; }
-        .nav-item .icon { font-size: 24px; margin-bottom: 3px; }
-
-        .menu-center {
-            position: relative;
-            top: -15px;
-            background: linear-gradient(180deg, #ff0055 0%, #a20055 100%);
-            width: 65px;
-            height: 75px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white !important;
-            box-shadow: 0 5px 15px rgba(162, 0, 85, 0.3);
-        }
-        .menu-center .icon { font-size: 30px; margin-bottom: 0; }
-
-        .empty-state {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            text-align: center;
-            color: #1a3b5d;
-        }
+        .menu-center { position: relative; top: -15px; background: linear-gradient(180deg, #ff0055 0%, #a20055 100%); width: 65px; height: 75px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white !important; box-shadow: 0 5px 15px rgba(162, 0, 85, 0.3); }
     </style>
 </head>
 <body>
 
     <div id="login-page">
         <header class="login-header">
-            <div class="logo-text">DenizBank</div>
+            <div style="font-size: 22px; font-weight: bold;">DenizBank</div>
             <button class="lang-btn">ENG</button>
         </header>
-
         <main class="login-card">
-            <div class="tabs">
-                <button class="tab active">BİREYSEL</button>
-                <button class="tab">KURUMSAL</button>
-            </div>
-
+            <div class="tabs"><button class="tab active">BİREYSEL</button><button class="tab">KURUMSAL</button></div>
             <div class="input-group">
                 <label>T.C. Kimlik No / Kullanıcı Adı</label>
-                <input type="text" id="username" placeholder="Kullanıcı Adı/TCKN" value="Oğuz Kağan BÖLÜKBAŞI">
+                <input type="text" id="username" value="Oğuz Kağan BÖLÜKBAŞI">
             </div>
-
             <div class="input-group">
                 <label>Parola</label>
                 <input type="password" id="password" placeholder="Parolanızı giriniz">
             </div>
-
-          
-
             <button class="login-btn" onclick="loginCheck()">GİRİŞ YAP</button>
-
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button style="flex:1; font-size:10px; padding:10px; border:1px solid #ccc; background:white; border-radius:6px; color:#444;">PAROLAMI UNUTTUM</button>
-                <button style="flex:1; font-size:10px; padding:10px; border:1px solid #ccc; background:white; border-radius:6px; color:#444;">KULLANICI OLUŞTUR</button>
-            </div>
         </main>
     </div>
 
     <div id="dashboard-page">
         <header class="dash-header">
             <div class="dash-top-icons">
-                <span style="font-size: 20px;">⬅ DenizBank</span>
-                <div style="display:flex; gap:15px; align-items:center;">
-                    <span>⏸</span>
-                    <span style="position:relative;">🔔<small style="position:absolute; top:-5px; right:-8px; background:green; color:white; border-radius:50%; padding:1px 5px; font-size:10px;">5</small></span>
-                </div>
+                <span style="font-size: 18px;">⬅ DenizBank</span>
+                <div style="display:flex; gap:15px;"><span>⏸</span><span>🔔</span></div>
             </div>
 
             <nav class="dash-nav">
-                <span class="active-tab">HESAPLAR</span>
-                <span>KARTLAR</span>
-                <span>FİNANSAL ÖZET</span>
+                <span id="tab-link-accounts" class="active-tab" onclick="switchTab('accounts')">HESAPLAR</span>
+                <span id="tab-link-cards" onclick="switchTab('cards')">KARTLAR</span>
+                <span onclick="switchTab('summary')">FİNANSAL ÖZET</span>
             </nav>
 
-            <div class="acc-info-card">
-                <div>
-                    <div style="font-weight:bold; font-size:15px;">Oğuz Kağan Bölükbaşı</div>
-                    <div style="font-size:12px; opacity:0.8;">22348864 - 55555 / Silivri</div>
-                </div>
-                <div style="display:flex; gap:10px;">
-                    <span>▼</span>
+            <div id="accounts-header-info">
+                <div class="acc-info-card">
+                    <div>
+                        <div style="font-weight:bold;">Oğuz Kağan Bölükbaşı</div>
+                        <div style="font-size:12px; opacity:0.8;">22348864 - 55555 / Silivri</div>
+                    </div>
                     <span>👁</span>
                 </div>
+                <div class="balance-section">
+                    <p>Güncel Bakiye</p>
+                    <h1>1.005.600,00 TL</h1>
+                    <p>Bloke Tutarı: 0,00 TL</p>
+                </div>
+                <div class="grid-actions">
+                    <div class="action-item"><div class="action-box">↑</div><span>Hisse Al</span></div>
+                    <div class="action-item"><div class="action-box">↓</div><span>Hisse Sat</span></div>
+                    <div class="action-item"><div class="action-box">📝</div><span>Emirlerim</span></div>
+                    <div class="action-item"><div class="action-box">📈</div><span>Özet</span></div>
+                </div>
             </div>
 
-            <div class="balance-section">
-                <p>Güncel Bakiye</p>
-                <h1>1.005.600,00 TL</h1>
-                <p>Bloke Tutarı: 0,00 TL</p>
-            </div>
-
-            <div class="grid-actions">
-                <div class="action-item"><div class="action-box">↑</div><span>Hisse<br>Al</span></div>
-                <div class="action-item"><div class="action-box">↓</div><span>Hisse<br>Sat</span></div>
-                <div class="action-item"><div class="action-box">📝</div><span>Hisse<br>Emirlerim</span></div>
-                <div class="action-item"><div class="action-box">📈</div><span>Birikim<br>Özeti</span></div>
+            <div id="cards-header-info" style="display: none;">
+                <div class="acc-info-card">
+                    <div>
+                        <div style="font-weight:bold;">⭐ DenizBank Gold MasterCard</div>
+                        <div style="font-size:12px; opacity:0.8;">5556 60** **** 6190</div>
+                    </div>
+                    <span>👁</span>
+                </div>
+                <div class="balance-section">
+                    <p>Kullanılabilir Limit</p>
+                    <h1 style="color: #ffeb3b;">-59.996,46 TL ></h1>
+                    <p>Ekstreden Kalan Borç: 36.003,54 TL</p>
+                </div>
+                <div class="grid-actions">
+                    <div class="action-item"><div class="action-box">📇</div><span>Kart Detay</span></div>
+                    <div class="action-item"><div class="action-box">₺</div><span>Borç Öde</span></div>
+                    <div class="action-item"><div class="action-box">🔓</div><span>Nakit Avans</span></div>
+                    <div class="action-item"><div class="action-box">⚙</div><span>Limit İşlem</span></div>
+                </div>
             </div>
         </header>
 
-        <main class="empty-state">
-            <div style="background:#0082f0; color:white; width:70px; height:70px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:35px; margin-bottom:20px;">💬</div>
-            <h3 style="font-size:18px;">Bu ürüne ait herhangi bir işleminiz bulunmamaktadır.</h3>
+        <main class="content-container">
+            <div id="content-accounts" class="tab-content active">
+                <div style="background:#0082f0; color:white; width:60px; height:60px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:30px; margin-bottom:15px;">💬</div>
+                <h3 style="color:#1a3b5d;">Bu ürüne ait herhangi bir işleminiz bulunmamaktadır.</h3>
+            </div>
+
+            <div id="content-cards" class="tab-content">
+                <div style="background:#0082f0; color:white; width:60px; height:60px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:30px; margin-bottom:15px;">⏸</div>
+                <h3 style="color:#1a3b5d;">Bu karta ait dönemiçi işleminiz bulunmamaktadır.</h3>
+                <p style="color:#0082f0; margin-top:20px; font-weight:bold;">Kartın Tüm Hareketlerini Görüntüle</p>
+            </div>
         </main>
 
         <nav class="bottom-nav">
-            <a href="#" class="nav-item active">
-                <span class="icon">🏠</span>
-                <span>Ana Sayfa</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="icon">📋</span>
-                <span>Başvurular</span>
-            </a>
-            <a href="#" class="nav-item menu-center">
-                <span class="icon">☸</span>
-                <span>MENÜ</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="icon">💸</span>
-                <span>Para Gönder</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="icon">💳</span>
-                <span>Ödeme Yap</span>
-            </a>
+            <a href="#" class="nav-item active"><span style="font-size:24px;">🏠</span><span>Ana Sayfa</span></a>
+            <a href="#" class="nav-item"><span style="font-size:24px;">📋</span><span>Başvurular</span></a>
+            <a href="#" class="nav-item menu-center"><span style="font-size:24px;">☸</span><span>MENÜ</span></a>
+            <a href="#" class="nav-item"><span style="font-size:24px;">💸</span><span>Para Gönder</span></a>
+            <a href="#" class="nav-item"><span style="font-size:24px;">💳</span><span>Ödeme Yap</span></a>
         </nav>
     </div>
 
     <script>
         function loginCheck() {
-            const passInput = document.getElementById('password').value;
-            const correctPass = "7654321";
-
-            if (passInput === correctPass) {
-                // Şifre doğru, sayfaları değiştir
+            if (document.getElementById('password').value === "7654321") {
                 document.getElementById('login-page').style.display = 'none';
                 document.getElementById('dashboard-page').style.display = 'flex';
             } else {
-                // Şifre yanlış, uyarı ver
-                alert("Hatalı parola! Lütfen tekrar deneyiniz.");
-                document.getElementById('password').value = ""; // Şifre alanını temizle
+                alert("Hatalı parola!");
+                document.getElementById('password').value = "";
+            }
+        }
+
+        function switchTab(tabName) {
+            // Tüm aktif sınıfları ve içerikleri temizle
+            document.getElementById('tab-link-accounts').classList.remove('active-tab');
+            document.getElementById('tab-link-cards').classList.remove('active-tab');
+            document.getElementById('content-accounts').classList.remove('active-tab'); // display: none
+            document.getElementById('content-cards').style.display = 'none';
+            document.getElementById('content-accounts').style.display = 'none';
+            document.getElementById('accounts-header-info').style.display = 'none';
+            document.getElementById('cards-header-info').style.display = 'none';
+
+            if(tabName === 'accounts') {
+                document.getElementById('tab-link-accounts').classList.add('active-tab');
+                document.getElementById('content-accounts').style.display = 'flex';
+                document.getElementById('accounts-header-info').style.display = 'block';
+            } else if(tabName === 'cards') {
+                document.getElementById('tab-link-cards').classList.add('active-tab');
+                document.getElementById('content-cards').style.display = 'flex';
+                document.getElementById('cards-header-info').style.display = 'block';
             }
         }
     </script>
